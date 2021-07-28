@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>NewsTranslationTool</title>
+</head>
+<body>
+  <p th:text="${title}"></p><br>
+  <form:form modelAttribute="messageForm">
+  	<p th:text="${userName}"></p>
+  	<input type = "text" name = "name">
+  	<p th:text="${password}"></p>
+  	<input type = "text" name = "password"><br>
+    <input type="submit" value = "サインイン">
+  </form:form>
+</body>
+</html>
