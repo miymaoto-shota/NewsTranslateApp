@@ -2,16 +2,25 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>NewsTranslationTool</title>
+  <title>SignIn</title>
 </head>
 <body>
-  <p th:text="${title}"></p><br>
-  <form:form modelAttribute="messageForm">
-  	<p th:text="${userName}"></p>
-  	<input type = "text" name = "name">
-  	<p th:text="${password}"></p>
-  	<input type = "text" name = "password"><br>
-    <input type="submit" value = "サインイン">
-  </form:form>
+  <td>サインイン画面</td><br><br>
+  <p th:text="*{userName}"></p>
+  <p th:text="*{password}"></p>
+  
+  <td>ユーザー名：</td>
+  <input type = "text" name = "inputUserName"><br>
+  	
+  <td>パスワード：</td>
+  <input type = "text" name = "inputPassword"><br>
+  
+  <form th:action="@{/NewsTranslate/TopPage}" method="post">
+  	<input type="submit" value = "サインイン"><br><br>
+  </form>
+  <form th:action="@{/NewsTranslate/SignUp}" method="post">
+  	<input type="submit" name = "SignUp" value = "サインアップ">
+  </form>
+  <input type="submit" name = "TopPage" value = "ユーザー登録なしで使用する">
 </body>
 </html>
