@@ -4,8 +4,23 @@
   <meta charset="UTF-8">
   <title>TopPage</title>
 </head>
+
 <body>
-  <td>TOP PAGE</td>
-  <input type="submit" name = "SignOut" value = "サインアウト">
+<input type="submit" value = "編集">
+<form th:action="@{/NewsTranslate/SignOut}" method="post">
+<p style="text-align: right;" th:text="*{userName}"></p><input type="submit" value = "サインアウト">
+</form>
+
+<p style="text-align: left;">検索</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;">
+<p>日付</p>
+</td>
+<td style="width: 50%;">タイトル</td>
+</tr>
+</tbody>
+</table>
 </body>
 </html>

@@ -5,14 +5,19 @@
   <title>SignUp</title>
 </head>
 <body>
-  <td>サインアップ画面</td><br>
-  <td>ユーザー名：</td>
-  <input type = "text" name = "inputUserName"><br>
-  <td>パスワード：</td>
-  <input type = "text" name = "inputPassword"><br>
-  <td>パスワード確認：</td>
-  <input type = "text" name = "inputPasswordCheck"><br><br>
-  	
-  <input type="submit" name = "Register" value = "登録">
+    <td>サインアップ画面</td><br><br>
+    <form th:action="@{/NewsTranslate/SignUpCheck}" method="post">
+        <td>ユーザー名：</td>
+        <input type = "text" name = "userName"><br>
+        <td>パスワード：</td>
+        <input type = "text" name = "password"><br>
+        <td>パスワード確認：</td>
+        <input type = "text" name = "passwordCheck"><br><br>
+        
+        <p th:text="*{nameCaution}"></p>
+        <p th:text="*{passwordCaution}"></p>
+        <input type="submit" value = "登録">
+  	</form>
+  
 </body>
 </html>

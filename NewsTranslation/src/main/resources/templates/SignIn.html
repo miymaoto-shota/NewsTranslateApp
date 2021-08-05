@@ -5,22 +5,23 @@
   <title>SignIn</title>
 </head>
 <body>
-  <td>サインイン画面</td><br><br>
-  <p th:text="*{userName}"></p>
-  <p th:text="*{password}"></p>
+    <td>サインイン画面</td><br><br>
+    <form th:action="@{/NewsTranslate/SignInCheck}" method="post">
+        <td>ユーザー名：</td>
+        <input type = "text" name = "userName"><br>
+        <td>パスワード：</td>
+        <input type = "text" name = "password"><br>
+      
+        <p th:text="*{caution}"></p>
+        <input type="submit" value = "サインイン"><br><br>
+    </form>
   
-  <td>ユーザー名：</td>
-  <input type = "text" name = "inputUserName"><br>
-  	
-  <td>パスワード：</td>
-  <input type = "text" name = "inputPassword"><br>
-  
-  <form th:action="@{/NewsTranslate/TopPage}" method="post">
-  	<input type="submit" value = "サインイン"><br><br>
-  </form>
-  <form th:action="@{/NewsTranslate/SignUp}" method="post">
-  	<input type="submit" name = "SignUp" value = "サインアップ">
-  </form>
-  <input type="submit" name = "TopPage" value = "ユーザー登録なしで使用する">
+    <form th:action="@{/NewsTranslate/SignUp}" method="post">
+        <input type="submit" value = "サインアップ">
+    </form>
+    
+    <form th:action="@{/NewsTranslate/NotSignIn}" method="post">
+        <input type="submit" value = "ユーザー登録なしで使用する">
+    </form>
 </body>
 </html>

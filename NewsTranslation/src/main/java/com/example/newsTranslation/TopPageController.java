@@ -12,12 +12,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TopPageController {
 
 	@RequestMapping(value = "/TopPage", method = RequestMethod.GET)
-	public String setMessage(Model model) {
+	public String TopPage(Model model) {
 		return "TopPage";
 	}
 
-	@RequestMapping(params = "SignOut", method = RequestMethod.POST)
-	public String SignUp(Model model) {
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public String gotoEdit(Model model) {
+		return "TopPage";
+	}
+
+	@RequestMapping(value = "/SignOut", method = RequestMethod.POST)
+	public String gotoSignOut(Model model) {
 		return "SignIn";
 	}
 }
