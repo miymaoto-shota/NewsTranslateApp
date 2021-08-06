@@ -13,8 +13,10 @@ public class NewsDB {
 	private Statement stmt = null;
 	private ResultSet rs = null;
 
+	private int parametarCount = 0;
+
 	// DB接続
-	public boolean Connect() {
+	private boolean Connect() {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/newsdb", "root", "88884444MMmm0000");
 		} catch (SQLException e) {
@@ -24,7 +26,7 @@ public class NewsDB {
 	}
 
 	// DB切断
-	public void Close() {
+	private void Close() {
 		try {
 			conn.close();
 		} catch (SQLException e) {
@@ -32,26 +34,29 @@ public class NewsDB {
 		}
 	}
 
+	public void SetSql(String sql) throws SQLException {
+		prepareStmt = conn.prepareStatement(sql);
+	}
+
+	public void setParameters(String data) throws SQLException {
+		this.parametarCount++;
+		prepareStmt.setString(this.parametarCount, data);
+	}
+
 	// データ取得
-	public boolean Select(String sql) {
-		try {
-			prepareStmt = conn.prepareStatement(sql);
-			rs = prepareStmt.executeQuery();
-		} catch (SQLException e) {
-			return false;
-		}
-		return true;
+	public void Select(String sql) throws SQLException {
+		this.Connect();
+		rs = prepareStmt.executeQuery();
+
+		this.Close();
 	}
 
 	// データ追加,更新,削除
-	public boolean ExecuteUpdate(String sql) {
-		try {
-			stmt = conn.createStatement();
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			return false;
-		}
-		return true;
+	public void ExecuteUpdate() throws SQLException {
+		this.Connect();
+		prepareStmt.executeUpdate();
+		
+		this.Close();
 	}
 
 	public ResultSet getResultSet() {

@@ -1,5 +1,7 @@
 package com.example.newsTranslation;
 
+import java.sql.SQLException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,12 +20,14 @@ public class SignInController {
 	@RequestMapping(value = "SignInCheck", method = RequestMethod.POST)
 	public String SignInCheck(Model model, @ModelAttribute("SignInForm") SignInForm signInForm) {
 		AccountData accountData = new AccountData();
-		if (!accountData.getAccountData(signInForm.getUserName(), signInForm.getPassword())) {
+		try {
+			accountData.getAccountData(signInForm.getUserName(), signInForm.getPassword());
+		} catch (SQLException e) {
 			model.addAttribute("caution", "アカウント取得失敗");
 			return "SignIn";
 		}
 
-		if (accountData.getName() != null && accountData.getPassword() != null) {
+		if (accountData.findByName() != null && accountData.findByPassword() != null) {
 			model.addAttribute("userName", signInForm.getUserName());
 			return "TopPage";
 		}

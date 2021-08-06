@@ -2,65 +2,48 @@ package com.example.newsTranslation;
 
 import java.sql.SQLException;
 
-public class AccountData {
-	private String name;
-	private String password;
-	private NewsDB newsDB;
+public class AccountData implements AccountDataRepository {
+	AccountDataManager accountDataManager = new AccountDataManager();
 
-	public boolean getAccountData(String name, String password) {
-		NewsDB newsDB = new NewsDB();
-		if (!newsDB.Connect()) {
-			newsDB.Close();
-			newsDB = null;
-			return false;
-		}
+	@Override
+	public void getAccountData(String name, String password) throws SQLException {
 
 		String sql = "";
-		sql = "select * from accountlist where name = '" + name + "'";
+		sql = "select * from accountlist where name = ? ";
 		if (!password.equals("")) {
-			sql += " and password = '" + password + "'";
+			sql += " and password = ?";
 		}
 
-		newsDB.Select(sql);
+		newsDB.SetSql(sql);
 
-		try {
-			while (newsDB.getResultSet().next()) {
-				this.name = newsDB.getResultSet().getString("name");
-				this.password = newsDB.getResultSet().getString("password");
-			}
-		} catch (SQLException e) {
-			newsDB.Close();
-			newsDB = null;
-			return false;
+		newsDB.setParameters(name);
+		newsDB.setParameters(password);
+
+		while (newsDB.getResultSet().next()) {
+			accountDataManager.setName(newsDB.getResultSet().getString("name"));
+			accountDataManager.setPassword(newsDB.getResultSet().getString("password"));
 		}
-		newsDB.Close();
-		newsDB = null;
-		return true;
 	}
 
-	public boolean createAccountData(String name, String password) {
-		NewsDB newsDB = new NewsDB();
-		if (!newsDB.Connect()) {
-			newsDB.Close();
-			newsDB = null;
-			return false;
-		}
+	@Override
+	public void createAccountData(String name, String password) throws SQLException {
+
 		String sql = "";
-		sql = "insert into accountlist value( '" + name + "', " + "'" + password + "');";
+		sql = "insert into accountlist value( ?, ?);";
 
-		if (!newsDB.ExecuteUpdate(sql)) {
-			newsDB.Close();
-			newsDB = null;
-			return false;
-		}
-		return true;
+		newsDB.SetSql(sql);
+
+		newsDB.setParameters(name);
+		newsDB.setParameters(password);
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public String findByName() {
+		return accountDataManager.getName();
 	}
 
-	public String getPassword() {
-		return password;
+	@Override
+	public String findByPassword() {
+		return accountDataManager.getPassword();
 	}
 }
