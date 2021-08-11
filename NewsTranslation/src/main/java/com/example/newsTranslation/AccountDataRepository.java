@@ -1,14 +1,17 @@
 package com.example.newsTranslation;
 
-import java.sql.SQLException;
+import java.util.List;
 
-public interface AccountDataRepository {
-	NewsDB newsDB = new NewsDB();
-	
-	public void getAccountData(String name ,String password)  throws SQLException;
-	public void createAccountData(String name, String password) throws SQLException;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+//import org.springframework.stereotype.Repository;
 
-	public String findByName();
-	
-	public String findByPassword();
-};
+@Repository
+public interface AccountDataRepository extends JpaRepository<AccountDataEntity, String> {
+	// public AccountDataEntity findByName(String name);
+
+	List<AccountDataEntity> findByName(String name);
+
+	@SuppressWarnings("unchecked")
+	AccountDataEntity save(AccountDataEntity accountDataEntity);
+}

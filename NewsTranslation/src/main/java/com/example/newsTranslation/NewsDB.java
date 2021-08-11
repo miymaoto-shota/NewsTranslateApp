@@ -16,7 +16,7 @@ public class NewsDB {
 	private int parametarCount = 0;
 
 	// DB接続
-	private boolean Connect() {
+	public boolean Connect() {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/newsdb", "root", "88884444MMmm0000");
 		} catch (SQLException e) {
@@ -26,8 +26,10 @@ public class NewsDB {
 	}
 
 	// DB切断
-	private void Close() {
+	public void Close() {
 		try {
+			this.parametarCount = 0;
+			prepareStmt.clearParameters();
 			conn.close();
 		} catch (SQLException e) {
 			System.out.print(e.getMessage());
@@ -44,18 +46,13 @@ public class NewsDB {
 	}
 
 	// データ取得
-	public void Select(String sql) throws SQLException {
-		this.Connect();
+	public void Select() throws SQLException {
 		rs = prepareStmt.executeQuery();
-
-		this.Close();
 	}
 
 	// データ追加,更新,削除
 	public void ExecuteUpdate() throws SQLException {
-		this.Connect();
 		prepareStmt.executeUpdate();
-		
 		this.Close();
 	}
 

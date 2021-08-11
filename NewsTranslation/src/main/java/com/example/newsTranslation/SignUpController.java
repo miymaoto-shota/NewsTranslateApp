@@ -1,7 +1,5 @@
 package com.example.newsTranslation;
 
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/NewsTranslate")
 public class SignUpController {
+
+	@Autowired
+	private AccountDataService accountDataService;
 
 	// パスワード ハッシュ化用
 	@Autowired
@@ -35,7 +36,7 @@ public class SignUpController {
 		String nameCautionMessage = "";
 		String passwordCautionMessage = "";
 		boolean isError = false;
-		
+
 		// 入力チェック
 		if (signUpForm.getUserName().equals("")) {
 			nameCautionMessage = "ユーザ名が入力されていません\n";
@@ -58,26 +59,19 @@ public class SignUpController {
 		}
 
 		// 既に登録されているアカウントか確認
-		AccountData accountData = new AccountData();
-		try {
-			accountData.getAccountData(signUpForm.getUserName(), "");
-			if (accountData.findByName() != null) {
-				model.addAttribute("nameCaution", "既に登録されているアカウントです");
-				return "SignUp";
-			}
-		} catch (SQLException e) {
-			model.addAttribute("nameCaution", "アカウントデータの取得に失敗しました");
+		AccountDataEntity userData = accountDataService.findByName(signUpForm.getUserName());
+		if (userData != null) {
+			model.addAttribute("nameCaution", "既に登録されているアカウントです");
 			return "SignUp";
 		}
 
 		// アカウントをDBに登録
-		try {
-			String encodedPassword =  passwordEncoder.encode(signUpForm.getPassword());
-						
-			accountData.createAccountData(signUpForm.getUserName(), encodedPassword);
-		} catch (SQLException e) {
-			model.addAttribute("nameCaution", "アカウントの登録に失敗しました");
-		}
+		String encodedPassword = passwordEncoder.encode(signUpForm.getPassword());
+		AccountDataEntity saveData = new AccountDataEntity();
+		saveData.setName(signUpForm.getUserName());
+		saveData.setPassword(encodedPassword);
+
+		accountDataService.save(saveData);
 
 		return "SignIn";
 	}
