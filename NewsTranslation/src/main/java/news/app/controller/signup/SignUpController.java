@@ -22,15 +22,6 @@ public class SignUpController {
 	@Autowired
 	private AccountDataService accountDataService;
 
-	// パスワード ハッシュ化用
-	@Autowired
-	PasswordEncoder passwordEncoder;
-
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 	@RequestMapping(value = "/SignUp", method = RequestMethod.GET)
 	public String SignUp(Model model) {
 		return "SignUp";
@@ -71,6 +62,7 @@ public class SignUpController {
 		}
 
 		// アカウントをDBに登録
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(signUpForm.getPassword());
 		AccountDataEntity saveData = new AccountDataEntity();
 		saveData.setName(signUpForm.getUserName());

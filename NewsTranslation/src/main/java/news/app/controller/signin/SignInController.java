@@ -2,6 +2,7 @@ package news.app.controller.signin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,7 +30,7 @@ public class SignInController {
 	public String SignInCheck(Model model, @ModelAttribute("SignInForm") SignInForm signInForm) {
 
 		try {
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			AccountDataEntity userData = accountDataService.getName(signInForm.getUserName());
 
 			if (userData != null) {
