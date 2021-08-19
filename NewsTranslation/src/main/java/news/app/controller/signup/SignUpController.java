@@ -1,7 +1,6 @@
 package news.app.controller.signup;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,20 +15,10 @@ import news.domain.service.AccountDataService;
 
 @Controller
 @SessionScope
-@RequestMapping("/NewsTranslate")
 public class SignUpController {
 
 	@Autowired
 	private AccountDataService accountDataService;
-
-	// パスワード ハッシュ化用
-	@Autowired
-	PasswordEncoder passwordEncoder;
-
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 
 	@RequestMapping(value = "/SignUp", method = RequestMethod.GET)
 	public String SignUp(Model model) {
@@ -71,6 +60,7 @@ public class SignUpController {
 		}
 
 		// アカウントをDBに登録
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(signUpForm.getPassword());
 		AccountDataEntity saveData = new AccountDataEntity();
 		saveData.setName(signUpForm.getUserName());

@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>TopPage</title>
+	<meta charset="UTF-8">
+	<title>TopPage</title>
 </head>
 
 <body>
-<input type="submit" value = "編集">
-<form th:action="@{/NewsTranslate/SignOut}" method="post">
-<p style="text-align: right;" th:text="*{userName}"></p><input type="submit" value = "サインアウト">
-</form>
+	<form th:action="@{/SignOut}" method="post">
+		<p style="text-align: right;" th:text="*{userName}"></p><input type="submit" value = "サインアウト">
+	</form>
 
-<p style="text-align: left;">検索</p>
-<table style="border-collapse: collapse; width: 100%;" border="1">
-<tbody>
-<tr>
-<td style="width: 50%;">
-<p>日付</p>
-</td>
-<td style="width: 50%;">タイトル</td>
-</tr>
-</tbody>
-</table>
+	<table border="1">
+    	<tr>
+    		<th>日付</th>
+    		<th>タイトル</th>
+    	</tr>
+    	
+    	<tbody>
+    		<tr th:each="news : *{newslist}">
+        		<td th:text="${news.date}">/td>
+        		<td th:text="${news.title}">/td>
+        		<td>
+        			<form th:action="@{/NewsView}" method="post">
+						<input type="submit" value="表示">
+						<input type="hidden" name="title" th:value="${news.title}">
+						<input type="hidden" name="original_text" th:value="${news.text}">
+						<input type="hidden" name="traslated_text" th:value="${news.translatedText}">
+					</form>
+				</td>
+      		</tr>
+    	</tbody>
+    	
+  	</table>
 </body>
 </html>

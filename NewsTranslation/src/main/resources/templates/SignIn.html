@@ -5,23 +5,23 @@
   <title>SignIn</title>
 </head>
 <body>
+<div align="center">
     <td>サインイン画面</td><br><br>
-    <form th:action="@{/NewsTranslate/SignInCheck}" method="post">
+    
+    <p th:if="${param.error}" style="color:red">ユーザー名もしくはパスワードに誤りがあります。</p><br>
+    
+    <form th:action="@{/SignInCheck}" method="post">
         <td>ユーザー名：</td>
-        <input type = "text" name = "userName"><br>
+        <input type = "text" name = "username"><br>
         <td>パスワード：</td>
         <input type = "text" name = "password"><br>
       
-        <p th:text="*{caution}"></p>
         <input type="submit" value = "サインイン"><br><br>
     </form>
-  
-    <form th:action="@{/NewsTranslate/SignUp}" method="post">
-        <input type="submit" value = "サインアップ">
-    </form>
     
-    <form th:action="@{/NewsTranslate/NotSignIn}" method="post">
+    <form th:action="@{/NotSignIn}" method="post">
         <input type="submit" value = "ユーザー登録なしで使用する">
     </form>
+</div>
 </body>
 </html>
