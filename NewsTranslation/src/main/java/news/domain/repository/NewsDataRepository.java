@@ -7,4 +7,7 @@ import news.domain.model.NewsDataEntity;
 
 public interface NewsDataRepository extends JpaRepository<NewsDataEntity, Integer> {
 	List<NewsDataEntity> findAll();
+
+	@SuppressWarnings("unchecked")
+	NewsDataEntity save(NewsDataEntity newsDataEntity);
 }

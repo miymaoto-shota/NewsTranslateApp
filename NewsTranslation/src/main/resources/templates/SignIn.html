@@ -6,21 +6,28 @@
 </head>
 <body>
 <div align="center">
-    <td>サインイン画面</td><br><br>
+    <td>サインイン</td><br><br>
     
     <p th:if="${param.error}" style="color:red">ユーザー名もしくはパスワードに誤りがあります。</p><br>
     
+    
     <form th:action="@{/SignInCheck}" method="post">
         <td>ユーザー名：</td>
-        <input type = "text" name = "username"><br>
+        <input type = "text" name = "userName"><br>
         <td>パスワード：</td>
-        <input type = "text" name = "password"><br>
+        <input type = "password" name = "password"><br>
       
         <input type="submit" value = "サインイン"><br><br>
     </form>
     
-    <form th:action="@{/NotSignIn}" method="post">
+    <form th:action="@{/SignUp}" method="post">
+        <input type="submit" value = "サインアップ">
+    </form>
+    
+    <form th:action="@{/SignInCheck}" method="post">
         <input type="submit" value = "ユーザー登録なしで使用する">
+        <input type="hidden" name="userName" value="user">
+		<input type="hidden" name="password" value="password">
     </form>
 </div>
 </body>

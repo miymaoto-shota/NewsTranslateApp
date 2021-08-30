@@ -6,10 +6,16 @@
 </head>
 
 <body>
-	<form th:action="@{/SignOut}" method="post">
-		<p style="text-align: right;" th:text="*{userName}"></p><input type="submit" value = "サインアウト">
-	</form>
+	<td>ニューストップ--</td><br><br>
 
+	<div align="right">
+		<form th:action="@{/SignOut}" method="post">
+			<p style="text-align: right;" th:text="*{userName}"></p>
+			<input type="submit" th:value = "*{buttonText}">
+		</form>
+	</div>
+	
+	<div align="center">
 	<table border="1">
     	<tr>
     		<th>日付</th>
@@ -19,18 +25,14 @@
     	<tbody>
     		<tr th:each="news : *{newslist}">
         		<td th:text="${news.date}">/td>
-        		<td th:text="${news.title}">/td>
         		<td>
         			<form th:action="@{/NewsView}" method="post">
-						<input type="submit" value="表示">
-						<input type="hidden" name="title" th:value="${news.title}">
-						<input type="hidden" name="original_text" th:value="${news.text}">
-						<input type="hidden" name="traslated_text" th:value="${news.translatedText}">
+						<a th:href="@{${news.url}}"><span th:text="${news.title}">title</span></a>
 					</form>
 				</td>
       		</tr>
     	</tbody>
-    	
   	</table>
+  	</div>
 </body>
 </html>

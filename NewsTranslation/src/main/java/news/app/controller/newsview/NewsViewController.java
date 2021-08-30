@@ -1,60 +1,56 @@
 package news.app.controller.newsview;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.annotation.SessionScope;
 
-import news.app.controller.signin.NewsData;
+import news.app.awsTranslate.AwsTranslate;
 import news.domain.model.NewsDataEntity;
 import news.domain.repository.NewsDataRepository;
 
 @Controller
-@SessionScope
 public class NewsViewController {
+
 	@Autowired
 	private NewsDataRepository newsDataRepository;
 
-	NewsData newsData = new NewsData();
+	@RequestMapping(value = "/NewsView/{newsID}")
+	public String NewsView(Model model, @PathVariable String newsID) {
+		List<NewsDataEntity> newsDataEntity = newsDataRepository.findAll();
 
-	@RequestMapping(value = "/NewsView", method = RequestMethod.GET)
-	public String NewsView(Model model, @ModelAttribute("NewsViewForm") NewsViewForm newsViewForm) {
-		newsData.setText(newsViewForm.getOriginal_text());
-		newsData.setTranslatedText(newsViewForm.getTraslated_text());
+		for (NewsDataEntity newsData : newsDataEntity) {
+			if (newsData.getNews_id().equals(Integer.parseInt(newsID))) {
+				String newsText = "";
 
-		return "NewsView";
-	}
+				if (newsData.getTranslate_flag() == 0) {
+					AwsTranslate awsTranslate = new AwsTranslate();
 
-	@RequestMapping(value = "/NewsViewOriginal", method = RequestMethod.POST)
-	public String newsOriginalText(Model model) {
-		model.addAttribute("text", newsData.getText());
-		return "NewsView";
-	}
-	
-	@RequestMapping(value = "/NewsViewTranslated", method = RequestMethod.POST)
-	public String newsTraslatedText(Model model) {
-		model.addAttribute("text", newsData.getTranslatedText());
-		return "NewsView";
-	}
+					newsText = awsTranslate.TranslateText(newsData.getOriginal_html());
 
-	private void SetNewsList(Model model) {
-		List<NewsData> newsList = new ArrayList<NewsData>();
-		List<NewsDataEntity> newsDataEntitys = newsDataRepository.findAll();
+					NewsDataEntity saveData = new NewsDataEntity();
+					saveData.setNews_id(newsData.getNews_id());
+					saveData.setUrl(newsData.getUrl());
+					saveData.setTitle(newsData.getTitle());
+					saveData.setDate(newsData.getDate());
+					saveData.setOriginal_html(newsData.getOriginal_html());
+					saveData.setTranslated_html(newsText);
+					saveData.setTranslate_flag(1);
 
-		for (NewsDataEntity newsDataEntity : newsDataEntitys) {
-			NewsData newsData = new NewsData();
-			newsData.setDate(newsDataEntity.getDate());
-			newsData.setTitle(newsDataEntity.getTitle());
-			newsData.setText(newsDataEntity.getOriginal_html());
-			newsData.setTranslatedText(newsDataEntity.getTranslated_html());
-			newsList.add(newsData);
+					newsDataRepository.save(saveData);
+
+				} else {
+					newsText = newsData.getTranslated_html();
+				}
+
+				model.addAttribute("title", newsData.getTitle());
+				model.addAttribute("text", newsText.replace("\\", "\n"));
+			}
 		}
-		model.addAttribute("newslist", newsList);
+
+		return "/NewsView";
 	}
 }

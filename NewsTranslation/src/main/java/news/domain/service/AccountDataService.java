@@ -17,8 +17,8 @@ public class AccountDataService {
 	}
 
 	/** 追加 */
-	public void addAccount(String name, String password) {
-		AccountDataEntity accountDataEntity = new AccountDataEntity(name, password);
+	public void addAccount(String name, String password, String role) {
+		AccountDataEntity accountDataEntity = new AccountDataEntity(name, password, role);
 		accountDataRepository.save(accountDataEntity);
 	}
 }

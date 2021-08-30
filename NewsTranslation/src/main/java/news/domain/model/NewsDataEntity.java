@@ -12,7 +12,7 @@ import lombok.Data;
 public class NewsDataEntity {
 	@Id
 	@Column(name = "news_id")
-	private int news_id;
+	private Integer news_id;
 
 	@Column(name = "date")
 	private String date;

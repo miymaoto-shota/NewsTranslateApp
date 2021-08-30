@@ -8,4 +8,5 @@ public class NewsData {
 	private String title;
 	private String text;
 	private String translatedText;
+	private String url;
 }
