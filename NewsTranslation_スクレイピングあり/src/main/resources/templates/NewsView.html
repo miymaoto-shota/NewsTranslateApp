@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>NewsView</title>
+</head>
+<body>
+
+    <p style="text-align: center; font-weight:bold; " th:text="*{title}"><br><br>
+    <pre><p style="text-align: left;" th:text="*{text}"><br></pre>
+
+    <div align="center">
+    	<form th:action="@{/}" method="post">
+        	<input type="submit" value = "一覧に戻る">
+    	</form>
+    </div>
+</body>
+</html>

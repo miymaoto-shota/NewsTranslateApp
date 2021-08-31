@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<title>TopPage</title>
+</head>
+
+<body>
+	<td>ニューストップ--</td><br><br>
+
+	<div align="right">
+		<form th:action="@{/SignOut}" method="post">
+			<p style="text-align: right;" th:text="*{userName}"></p>
+			<input type="submit" th:value = "*{buttonText}">
+		</form>
+	</div>
+	
+	<div align="center">
+	<table border="1">
+    	<tr>
+    		<th>日付</th>
+    		<th>タイトル</th>
+    	</tr>
+    	
+    	<tbody>
+    		<tr th:each="news : *{newslist}">
+        		<td th:text="${news.date}">/td>
+        		<td>
+        			<form th:action="@{/NewsView}" method="post">
+						<a th:href="@{${news.url}}"><span th:text="${news.title}">title</span></a>
+					</form>
+				</td>
+      		</tr>
+    	</tbody>
+  	</table>
+  	</div>
+</body>
+</html>
