@@ -1,7 +1,6 @@
 package news.app.controller.newsview;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +19,15 @@ public class NewsViewController {
 
 	@RequestMapping(value = "/NewsView/{newsID}")
 	public String NewsView(Model model, @PathVariable String newsID) {
+		
+		// ニュースデータ 全件取得
 		List<NewsDataEntity> newsDataEntity = newsDataRepository.findAll();
 
 		for (NewsDataEntity newsData : newsDataEntity) {
 			if (newsData.getNews_id().equals(Integer.parseInt(newsID))) {
 				String newsText = "";
 
+				// 翻訳フラグが0（翻訳されて無い）場合、翻訳したデータをDBに保存
 				if (newsData.getTranslate_flag() == 0) {
 					AwsTranslate awsTranslate = new AwsTranslate();
 

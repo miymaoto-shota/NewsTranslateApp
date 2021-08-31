@@ -2,7 +2,6 @@ package news.app.controller.toppage;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import news.app.controller.signin.NewsData;
 import news.domain.model.NewsDataEntity;
 import news.domain.repository.NewsDataRepository;
 
@@ -24,10 +21,12 @@ public class TopPageController {
 	@RequestMapping(value = "/")
 	public String TopPage(Model model) {
 
+		// ログインユーザー 情報取得
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userName = "";
 		String buttonText = "";
 
+		// 未ログインの場合、表示を変更
 		if (!auth.getAuthorities().toString().equals("[ROLE_ANONYMOUS]")) {
 			userName = auth.getName();
 			buttonText = "ログアウト";
@@ -39,6 +38,7 @@ public class TopPageController {
 		model.addAttribute("userName", userName);
 		model.addAttribute("buttonText", buttonText);
 
+		// ニュースデータを 取得
 		List<NewsData> newsList = new ArrayList<NewsData>();
 		List<NewsDataEntity> newsDataEntitys = newsDataRepository.findAll();
 		for (NewsDataEntity newsDataEntity : newsDataEntitys) {
